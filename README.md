@@ -2,7 +2,7 @@
 ## Introducción preparación del entorno de trabajo
 En este tema vamos a instalar los programas que nos hacen falta para el resto del curso; estos son:
 - Docker
-- Git
+- Git.
 - VirtualBox
 - Visual Studio Code
 Es **importante** que cuando realices *código fuente* lo subas a tu repositorio de GitHub para que esté sincronizado con tu cuenta y así acceder desde casa.
