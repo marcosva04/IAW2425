@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2</title>
+</head>
+<body>
+    <input type="text" placeholder="Introduzca cantidad" id="cantidad">
+    <button onclick="convertirAdolares()">Convertir a dólares</button>
+    <button onclick="convertirAeuros()">Convertir a euros</button>
+    <p id="resultado"></p>
+
+    <script>
+         
+
+        function convertirAdolares(){
+            if(esNumeroPositivo(document.getElementById("cantidad").value)){
+
+            let cantidad = parseFloat(document.getElementById("cantidad").value);
+            document.getElementById("resultado").innerHTML = cantidad * 1.09;
+            document.getElementById("resultado").innerHTML += " dolares";
+
+        }
+
+        alert("A ver macaco, introduce numeros enteros");
+        }
+
+        function convertirAeuros(){
+            if(esNumeroPositivo(document.getElementById("cantidad").value)){
+            let cantidad = parseFloat(document.getElementById("cantidad").value);
+            document.getElementById("resultado").innerHTML = cantidad * 0.92;
+            document.getElementById("resultado").innerHTML += " euros";
+        }
+
+        alert("A ver macaco, introduce numeros enteros");
+        }
+
+        function esNumeroPositivo(x){
+            if (isNaN(x))
+            return false;
+
+            else{
+                if(x>0)
+                    return true;
+
+                else
+                    return false;
+            }
+        }
+    </script>
+</body>
+</html>
