@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Adivinanza</title>
+</head>
+<body>
+    <p>Ingresa un número entre 0 y 5:</p>
+    <input type="number" id="userInput" min="0" max="5">
+    <button onclick="comprobar()">Comprobar</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        // Generamos un número aleatorio entre 0 y 5
+        const randomNumber = Math.floor(Math.random() * 6);
+
+        function comprobar() {
+            // Obtenemos el valor introducido por el usuario
+            const userGuess = parseInt(document.getElementById("userInput").value);
+
+            // Validamos que el usuario haya ingresado un número dentro del rango
+            if (userGuess < 0 || userGuess > 5 || isNaN(userGuess)) {
+                document.getElementById("resultado").textContent = "Por favor, introduce un número válido entre 0 y 5.";
+            } else if (userGuess === randomNumber) {
+                document.getElementById("resultado").textContent = "¡Felicidades! Adivinaste el número.";
+            } else {
+                document.getElementById("resultado").textContent = "Lo siento, el número correcto era " + randomNumber + ". Intenta de nuevo.";
+            }
+        }
+    </script>
+</body>
+</html>
