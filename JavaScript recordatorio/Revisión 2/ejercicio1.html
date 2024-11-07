@@ -3,38 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peso y Altura</title>
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <title>Índice de masa corporal</title>
 </head>
 <body>
-    <label>Introduzca su altura en cm: </label><input type="number" id="altura"><br>
-    <label>Introduzca su peso en Kg: </label><input type="number" id="peso"><br>
+    <label>Altura: </label><input type="text" placeholder="Introduce tu estatura en cm" id="altura"><br>
+    <label>Peso: </label> <input type="text" placeholder="Introduce tu peso en Kg" id="peso"><br>
+    
     <button onclick="calcularIMC()">Calcular IMC</button><br>
     <p id="resultado"></p>
+    
 
     <script>
-        function calcularIMC(){
-            let altura = document.getElementById("altura").value;
-            let peso = document.getElementById("peso").value;
-
-            let IMC = peso / (altura * altura);
-
-            if(IMC < 18.5){
-                document.getElementById("resultado").innerHTML = 'Peso inferior al normal'
-            }
-
-            if(IMC > 18.5 && IMC < 24.9){
-                document.getElementById("resultado").innerHTML = 'Peso normal'
-            }
-
-            if(IMC > 25.0 && IMC < 29.9){
-                document.getElementById("resultado").innerHTML = 'Peso superior al normal'
-            }
-
-            if(IMC > 30.0){
-                document.getElementById("resultado").innerHTML = 'Obesidad'
-            }
+        function calcularIMC (){
+            let peso = parseFloat(document.getElementById("peso").value);
+            let alturaMetros = parseInt (document.getElementById("altura").value)/100;
+            let alturaElevada = Math.pow(alturaMetros,2);
+            let resultado = peso/alturaElevada;
+            if(resultado < 18.5)
+                document.getElementById("resultado").innerHTML = "Su peso es inferior al normal";
+            else if (resultado <= 24.9)
+                document.getElementById("resultado").innerHTML = "Su peso es normal";
+            else if (resultado <= 30)
+                document.getElementById("resultado").innerHTML = "Su peso es superior al normal";
+            else
+                document.getElementById("resultado").innerHTML = "Usted tiene sobrepeso";
         }
     </script>
-
 </body>
 </html>
