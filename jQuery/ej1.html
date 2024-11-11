@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1 de jQuery</title>
+    <script src="jquery-3.7.1.js.js"></script> <!--Opción local-->
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>     Opción remota--> 
+</head>
+<body>
+    
+    <h1>Ejemplo de jQuery</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate tenetur similique deleniti voluptatibus, architecto sint impedit natus vero omnis quas unde adipisci! Voluptate maiores porro id odio, neque quibusdam laborum.</p>
+    <p class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui ex similique aliquid recusandae nesciunt fugit porro incidunt tempora, modi dolore, assumenda iusto? Nesciunt sit vel, assumenda a accusamus aut nemo!</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur velit libero commodi magni quidem, officiis dolore aut illo autem repellat delectus similique corrupti? Temporibus perferendis officiis nisi perspiciatis quo in?</p>
+    <p class="par">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Optio, ex dolores quam, quae placeat facere exercitationem maiores aliquam sunt molestias, perspiciatis quos tenetur doloribus nisi officia asperiores at laboriosam vitae!</p>
+
+    <button id="ocultar">Click para ocultar</button>
+    <button id="mostrar">Click para mostrar</button>
+    <button id="alternar">Click para alternar</button>
+
+    <script>
+
+        $(document).ready(function () {
+            // Cuando el sitio web se haya cargado por completo
+            $("#ocultar").click(function(){ 
+                $(".par").hide();
+             });
+
+            $("#mostrar").click(function(){ 
+                $(".par").show();
+             });
+
+             $("#alternar").click(function(){ 
+                $(".par").toggle();
+             });
+        });
+
+    </script>
+</body>
+</html>
