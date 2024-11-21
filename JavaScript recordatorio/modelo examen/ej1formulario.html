@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <title>Ejercicio 3</title>
+</head>
+<body>
+    <div id="panel">
+        <form action="">
+            <div class="ordenado"><label>Nombre</label><input type="text" id="campo1" required placeholder="Nombre"><span id="errornombre"></span></div>
+            <div class="ordenado"><label>Apellido1</label><input type="text" id="campo2" required placeholder="Apellido 1"><span id="errorapellidos"></span></div>
+            <div class="ordenado"><label>Apellido2</label><input type="text" id="campo3" required placeholder="Apellido 2"><span id="errorapellidos"></span></div>
+            <div class="ordenado"><label>DNI</label><input type="text" id="campo4" required placeholder="DNI"><span id="errorDNI"></span></div>
+            <div class="ordenado"><label>Email</label><input type="email" id="campo5" required placeholder="Correo"><span id="errorcorreo"></span></div>
+            <div class="ordenado"><label>Contraseña</label><input type="password" id="campo6" required placeholder="PIN"><span id="errormensajepin"></span></div>
+            <div class="ordenado"><label>Confirme contraseña</label><input type="password" id="campo7" required placeholder="Repetir PIN"><span id="errormensajepin2"></span></div>
+            <div class="ordenado"><label>Descripción (opcional)</label><input type="text" id="campo8" placeholder="Descripción"></div>
+            <div class="ordenado"><label>Fecha Nacimiento (opcional)</label><input type="date" id="campo9" placeholder="Fecha Nacimiento"></div>
+            <div class="ordenado"><label>Términos y Condiciones</label><input type="checkbox" id="campo10" required><span id="errormensajepin2"></span></div>
+
+            <p><button id="validar"><span>Enviar</span></button></p>
+        </form>
+    </div>
+
+    <script>
+
+function comprobarPIN (pin) {           
+            // Expresion para comprobar que tenga 8 digitos solo    let expresion = /^\d{8}$/; 
+
+            //Comprueba que la contarseña es fuerte y de 8 dígitos 
+            let expresion = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            return expresion.test(pin);
+        }
+
+        function calcularLetraDni(dni) {
+            let cadena = "TRWAGMYFPDXBNJZSQVHLCKET";
+            dni = parseInt(dni);
+            let posicion = dni % (cadena.length - 1);
+            return cadena[posicion];
+        }
+
+        function formatoNifValido(dni) {
+            const regex = /^\d{8}[A-Za-z]$/;
+            return regex.test(dni);
+        }
+
+
+
+        document.getElementById("validar").addEventListener('click',function(){
+            
+            let estanCorrectos = true;
+            for (var i=0;i<campos.length;i++){
+                document.getElementById("campo"+(i+1).toString()).innerHTML = "";        
+                if (elementos[i].value == "" || (i==6 && !campos[i].checked)){
+                    /*Si el campo está vacio o (el campo es la casilla de verificacion y no esta marcada) entonces...*/ 
+                    document.getElementById("campo"+(i+1).toString()).innerHTML = "El campo " + campos[i].id + " está vacío";
+                    estanCorrectos = false;
+                }
+                
+            }
+        
+            //Comprobacion de que el DNI es real
+            if(formatoNifValido(dni)) {
+                let letraCalculada = calcularLetraDni(dni.substring(0, dni.length - 1));
+                let letraEscrita = dni[dni.length - 1];
+                if(letraCalculada.toLowerCase() == letraEscrita.toLowerCase()) {
+                document.getElementById("errorDNI").innerHTML ="";
+                } else {
+                document.getElementById("errorDNI").innerHTML ="El DNI escrito no es correcto";
+                }
+            } else {
+                document.getElementById("errorDNI").innerHTML ="El DNI no tiene el formato válido";
+            }
+
+            //Comprobacion de que el PIN es de 8 dígitos y es segura
+
+            if(comprobarPIN()) {
+                document.getElementById("errormensajepin").innerHTML = "";
+                document.getElementById("errormensajepin2").innerHTML = "";
+            }else if (pin !== pinConfirmacion){
+                document.getElementById("errormensajepin").innerHTML = "Las contraseñas deben coincidir";
+                document.getElementById("errormensajepin").innerHTML = "Las contraseñas deben coincidir";
+            }else{
+                document.getElementById("errormensajepin").innerHTML = "Debe introducir una contraseña segura";
+                document.getElementById("errormensajepin2").innerHTML = "Debe introducir una contraseña segura";
+            }
+
+        });
+
+    </script>
+</body>
+</html>
