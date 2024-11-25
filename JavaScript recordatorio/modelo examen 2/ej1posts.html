@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alexandria">
+    <title>Posts</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+            <h1>Mostrar Posts</h1>
+    
+            <button id="btn-todos">Ver posts</button>
+            <div id="resultados"></div>
+       
+    <script>
+        
+    $(document).ready(function () {
+
+        
+        $("#btn-todos").click(function(){
+
+
+            $.ajax({
+
+            url: 'https://jsonplaceholder.typicode.com/todos',
+            dataType: 'json',
+            success: function(datos) { // respuesta
+
+                console.log(datos); // para la consola del navegador
+                $("#resultados").empty(); // borrar lo anterior
+
+                for(var i = 0; i < datos.length; i++){
+
+
+                    var resultados=$("<div id='resultados'></div>");
+                        resultados.append("<p>"+"<b>userID: </b>"+datos[i].userId+"</p>");
+                        resultados.append("<p>"+"<b>ID: </b>"+datos[i].id+"</p>");
+                        resultados.append("<p>"+"<b>Nombre: </b>"+datos[i].title+"</p>");
+                        resultados.append("<p>"+"<b>Estado: </b>"+datos[i].completed+"</p><br>");
+
+                    $("#resultados").append(resultados);
+                }
+            },
+
+            error: function(error){
+            $("#datos").text("Error cargando datos del servidor.");
+            }
+
+        });
+});
+                    
+    });
+
+
+    </script>
+</body>
+
+</html>
