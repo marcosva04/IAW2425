@@ -1,65 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alexandria">
-    <title>Countries</title>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <title>Muestra un País</title>
 </head>
-
 <body>
-
-            <h1>Paises</h1>
-
-            <button id="btn-producto">Obtener producto</button>
-            <div id="resultados"></div>
-       
+        <h1>Introduzca un pais</h1>
+        <input type="text" id="pais">
+        <button>Enviar</button>
+        <div id="datos"></div>
     <script>
-        
-    $(document).ready(function () {
+        $(document).ready(function () {
+            $("button").click(function(){
+                let pais = $("#pais").val();
+                $.ajax({
 
-        $("#btn-producto").click(function(){
-            
-            var id = $("#codProducto").val();
+                    url:"https://restcountries.com/v3.1/translation/" + pais + "?fields=name,capital,population,flags",
+                    success: function(datos){
+                        console.log(datos);
+                        $("#datos").empty();
+                        $(datos).each(function(index,element){
+                            let nombre = datos[index].name.common;
+                            let capital = datos[index].capital[0];
+                            let poblacion = datos[index].population;
+                            let bandera = datos[index].flags.png;
+                            $("#datos").append("<div class='formato'><p>Nombre: " + nombre + "</p><p>Capital: " + capital + "</p><p>Población: " + poblacion + "</p><p><img src=" + bandera + "></p></div>")
+                        });
+                    },
+                    error: function(){
+                        alert("No se ha podido conectar con el servidor. Por favor, inténtelo más tarde.")
+                    }
 
-            $.ajax({
-
-            url: 'https://fakestoreapi.com/products/' + id,
-            dataType: 'json',
-            success: function(datos) { // respuesta
-                console.log(datos); // para la consola del navegador
-
-                $("#resultados").empty(); // borrar lo anterior
-
-              
-
-                var photo = datos.image;
-                var img = $("<img src="+photo+"><br>")
-
-
-            $("#resultados").append(img)
-            $("#resultados").append("Título: "+ datos.title + "<br><br>");
-            $("#resultados").append("Descripción: "+ datos.description + "<br><br>");
-            $("#resultados").append("Precio: "+ datos.price + "<br><br>");
-            $("#resultados").text();
-
-            },
-
-            error: function(error){
-            $("#resultados").text("Error cargando datos del servidor.");
-            }
-
+                });
             });
-            });
-                    
-    });
-
-
+        });
     </script>
 </body>
-
 </html>

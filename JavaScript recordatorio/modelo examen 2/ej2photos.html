@@ -27,24 +27,21 @@
 
             $.ajax({
 
-            url: 'https://jsonplaceholder.typicode.com/posts',
+            url: 'https://jsonplaceholder.typicode.com/photos/',
             dataType: 'json',
             success: function(datos) { // respuesta
 
                 console.log(datos); // para la consola del navegador
                 $("#resultados").empty(); // borrar lo anterior
 
-                for(var i = 0; i < datos.length; i++){
+             
+                var photo = datos[index].url;
+                var img = $("<img src="+photo+"><br>")
 
 
-                    var resultados=$("<div id='resultados'></div>");
-                        resultados.append("<p>"+"<b>userID: </b>"+datos[i].userId+"</p>");
-                        resultados.append("<p>"+"<b>ID: </b>"+datos[i].id+"</p>");
-                        resultados.append("<p>"+"<b>Título: </b>"+datos[i].title+"</p>");
-                        resultados.append("<p>"+"<b>Body: </b>"+datos[i].body+"</p><br>");
-
+                    $("#resultados").append(img)
                     $("#resultados").append(resultados);
-                }
+                
             },
 
             error: function(error){
