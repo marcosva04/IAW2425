@@ -7,11 +7,14 @@
 </head>
 <body>
 <?php
-    $a=array("red","green","blue","yellow","brown");
-    $random_keys=array_rand($a,3);
-    echo $a[$random_keys[0]]."<br>";
-    echo $a[$random_keys[1]]."<br>";
-    echo $a[$random_keys[2]];
-?>
+$archivos = array_diff(scandir('.'), ['.', '..']);
+echo "<ul>";
+foreach ($archivos as $archivo) {
+	echo "<li><a href=\"$archivo\"
+target=\"_blank\">$archivo</a></li>";
+}
+echo "</ul>";
+
+ ?>
 </body>
 </html>
