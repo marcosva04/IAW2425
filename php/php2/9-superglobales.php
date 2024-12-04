@@ -9,7 +9,7 @@
     <?php
         $ip = $_SERVER['REMOTE_ADDR'];
         $navegador = $_SERVER['HTTP_USER_AGENT'];
-        $pagina = isset($_SERVER['HTTP_REFERER']);
+        $pagina = $_SERVER['HTTP_REFERER'];
 
         echo "Direccion IP: " . $ip . "<br>";
         echo "Navegador: " . $navegador . "<br>";

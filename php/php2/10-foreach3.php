@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foreach3</title>
     <style>
-        .tweet-container {
+        .tweet-caja {
             width: 100%;
             max-width: 500px;
             margin: 10px auto;
@@ -19,7 +19,7 @@
             font-size: 14px;
             color: #657786;
         }
-        .tweet-content {
+        .tweet-contenido {
             font-size: 16px;
             color: #14171a; 
         }
@@ -36,9 +36,9 @@
     ];
 
     function mostrarTweet($tweet) {
-        return "<div class='tweet-container'>
+        return "<div class='tweet-caja'>
                     <div class='tweet-header'>Usuario @ejemplo</div>
-                    <div class='tweet-content'>$tweet</div>
+                    <div class='tweet-contenido'>$tweet</div>
                 </div>";
     }
 
