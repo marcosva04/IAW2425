@@ -21,6 +21,7 @@
         <div class="grupo-formulario">
             <label for="apellido2">Segundo Apellido *</label>
             <input type="text" id="apellido2" name="apellido2">
+            <small class="error" id="error-apellido2"></small>
         </div>
         <div class="grupo-formulario">
             <label for="dni">DNI *</label>
@@ -61,8 +62,7 @@
         <p id="nombreUsuarioGenerado"></p>
     </div>
     <script>
-
-function validarDNI(valor){
+        function validarDNI(valor){
     let valido = false;
     var validChars = 'TRWAGMYFPDXBNJZSQVHLCKET';
     var nifRexp = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]$/i;
@@ -120,10 +120,10 @@ botonEnviar.addEventListener('click', function () {
         document.getElementById('error-apellido1').innerHTML = 'El campo primer apellido es necesario para completar el formulario';
         esValido = false;
     }
-    /* if (apellido2 == '') {
+    if (apellido2 == '') {
         document.getElementById('error-apellido2').innerHTML = 'El campo segundo apellido es necesario para completar el formulario';
         esValido = false;
-    }*/
+    }
     if (!validarDNI(dni)) {
         document.getElementById('error-dni').innerHTML = 'El DNI debe tener 8 dígitos seguidos de una letra';
         esValido = false;
