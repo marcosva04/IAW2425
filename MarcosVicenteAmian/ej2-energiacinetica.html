@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <title>Energía cinética</title>
+</head>
+<body>
+    <label>Masa: </label><input type="text" placeholder="Introduce la masa en kg" id="masa"><br>
+    <label>Velocidad: </label> <input type="text" placeholder="Introduce la velocidad en m/s" id="velocidad"><br>
+    
+    <button onclick="calcularEnergia()">Calcular energía cinética</button><br>
+    <p id="resultado"></p>
+    
+
+    <script>
+        function calcularEnergia (){
+
+            let masa = document.getElementById("masa").value;
+            let velocidad = document.getElementById("velocidad").value;
+
+
+            if(masa == "" || velocidad == ""){
+
+                document.getElementById("resultado").innerHTML = "Debes introducir ambos valores";
+
+
+            }
+            else{
+
+            if(masa != parseInt || velocidad != parseInt){
+                document.getElementById("resultado").innerHTML = "Debes introducir valores válidos (Números enteros)";
+
+            }
+            else{
+
+            let velocidadResuelta = Math.pow(velocidad,2);
+
+            let resultadomasavelocidad = masa*velocidadResuelta;
+
+            let resultado = resultadomasavelocidad/2;
+            if(resultado < 10)
+                document.getElementById("resultado").innerHTML = "La energía cinética es baja: "+resultado+" Joules";
+            else if (resultado <= 100)
+                document.getElementById("resultado").innerHTML = "La energía cinética es moderada: "+resultado+" Joules"
+            else if (resultado > 100)
+                document.getElementById("resultado").innerHTML = "La energía cinética es alta: "+resultado+" Joules"
+            }
+
+            }
+        }
+             
+            
+    </script>
+</body>
+</html>
