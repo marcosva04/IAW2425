@@ -1,53 +1,66 @@
 <?php
-$servername = "sql107.thsite.top";
-$username = "thsi_38097542";
-$password = "";
-$bd = "thsi_38097542_markos";
-$enlace = mysqli_connect($servername,$username,$password,$bd);
+// Conexión a la base de datos
+$servername = "sql107.thsite.top"; // Nombre del servidor
+$username = "thsi_38097542"; // Nombre de usuario
+$password = ""; // Contrasena
+$database = "thsi_38097542_markos";
+$enlace = mysqli_connect($servername, $username, $password, $database);
 
-if (!$enlace){
-    die("Ocurrió un problema :" . mysqli_connect_error());
+// Verificar conexión
+if (!$enlace) {
+    die("Conexión fallida: " . mysqli_connect_error());
 }
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-    
-    // Verificar si los campos están vacíos
-    if (empty($username) || empty($password)) {
-        header("Location: index.php?error=Todos los campos son obligatorios.");
-        exit();
+// Procesar formulario al enviarlo
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validar que los campos no estén vacíos
+    if (empty($_POST['email']) || empty($_POST['password'])) {
+        die("Error: Todos los campos son obligatorios.");
     }
-    
-    // Saneamiento de entradas
-    $username = $conn->real_escape_string($username);
-    $password = $conn->real_escape_string($password);
-    
-    // Verificar si el usuario existe y obtener hash de contraseña
-    $stmt = $conn->prepare("SELECT password FROM usuarios WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
-    
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($hashed_password);
-        $stmt->fetch();
-        
-        // Verificar la contraseña
-        if (password_verify($password, $hashed_password)) {
-            echo "Inicio de sesión exitoso. ¡Bienvenido, $username!";
+
+    // Saneamiento de las entradas
+    $email = htmlspecialchars(trim($_POST['email']));
+    $password = htmlspecialchars(trim($_POST['password']));
+
+    // Consultar el usuario por email
+    $query = "SELECT * FROM usuarios WHERE email='$email'";
+    $resultado = mysqli_query($enlace, $query);
+
+    if (mysqli_num_rows($resultado) === 1) {
+        // Recuperar los datos del usuario
+        $usuario = mysqli_fetch_assoc($resultado);
+
+        // Usar el hash almacenado como el salt para cifrar la contraseña ingresada
+        $password_hashed = crypt($password, $usuario['password']);
+
+        // Verificar la contraseña (comparación estricta)
+        if ($usuario['password'] === $password){ // CASO 1 (GRAN ERROR)
+        //if (hash_equals($usuario['password'], $password_hashed)) {
+            echo "Inicio de sesión exitoso. Bienvenido, " . $usuario['nombre'] . "!";
         } else {
-            header("Location: index.php?error=Nombre de usuario o contraseña incorrectos.");
-            exit();
+            echo "Error: Contraseña incorrecta." . $password_hashed . " es diferente de " . $usuario['password'];
         }
     } else {
-        header("Location: index.php?error=Nombre de usuario o contraseña incorrectos.");
-        exit();
+        echo "Error: Usuario no encontrado.";
     }
-    
-    $stmt->close();
 }
 
-$conn->close();
+mysqli_close($enlace);
 ?>
+
+<!-- Formulario de inicio de sesión -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <form method="POST" action="login.php">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">Iniciar sesión</button>
+    </form>
+</body>
+</html>
