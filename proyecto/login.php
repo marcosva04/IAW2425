@@ -1,33 +1,52 @@
 <?php
-session_start();
-include 'db.php';
+// Conexión a la base de datos
+$servername = "sql107.thsite.top"; // Nombre del servidor
+$username = "thsi_38097542"; // Nombre de usuario
+$password = "0!JSTh7?"; // Contrasena
+$database = "thsi_38097542_markos";
+$enlace = mysqli_connect($servername, $username, $password, $database);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+// Verificar conexión
+if (!$enlace) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
 
-    $stmt = $conn->prepare("SELECT id, username, password FROM usuarios WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $stmt->store_result();
+// Procesar formulario al enviarlo
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validar que los campos no estén vacíos
+    if (empty($_POST['username']) || empty($_POST['password'])) {
+        die("Error: Todos los campos son obligatorios.");
+    }
 
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $username, $hashed_password);
-        $stmt->fetch();
+    // Saneamiento de las entradas
+    $username = htmlspecialchars(trim($_POST['username']));
+    $password = htmlspecialchars(trim($_POST['password']));
 
-        if (hash_equals($hashed_password, hash('sha256', $password))) {
-            $_SESSION['user_id'] = $id;
+    // Consultar el usuario por username
+    $query = "SELECT * FROM login WHERE username='$username'";
+    $resultado = mysqli_query($enlace, $query);
+
+    if (mysqli_num_rows($resultado) === 1) {
+        // Recuperar los datos del usuario
+        $usuario = mysqli_fetch_assoc($resultado);
+
+        // Usar el hash almacenado como el salt para cifrar la contraseña ingresada
+        $password_hashed = crypt($password, $usuario['password']);
+
+        // Verificar la contraseña (comparación estricta)
+        if ($usuario['password'] === $password){ // CASO 1 (GRAN ERROR)
+        //if (hash_equals($usuario['password'], $password_hashed)) {
             $_SESSION['username'] = $username;
             header("Location: dashboard.php");
         } else {
-            echo "Contraseña incorrecta.";
+            echo "Error: Contraseña incorrecta." . $password_hashed . " es diferente de " . $usuario['password'];
         }
     } else {
-        echo "Usuario no encontrado.";
+        echo "Error: Usuario no encontrado.";
     }
-
-    $stmt->close();
 }
+
+mysqli_close($enlace);
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Inicio de Sesión</title>
 </head>
 <body>
-    <form method="POST" action="login.php">
+    <form method="POST" action="/proyecto/login.php">
         <label for="username">Usuario:</label>
         <input type="text" id="username" name="username" required><br>
         <label for="password">Contraseña:</label>
