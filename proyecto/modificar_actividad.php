@@ -1,39 +1,35 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+
 include 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
-    $titulo = $_POST['titulo'];
-    $tipo = $_POST['tipo'];
-    $departamento = $_POST['departamento'];
-    $profesor_responsable = $_POST['profesor_responsable'];
-    $trimestre = $_POST['trimestre'];
-    $fecha_inicio = $_POST['fecha_inicio'];
-    $hora_inicio = $_POST['hora_inicio'];
-    $fecha_fin = $_POST['fecha_fin'];
-    $hora_fin = $_POST['hora_fin'];
-    $organizador = $_POST['organizador'];
-    $acompañantes = $_POST['acompañantes'];
-    $ubicacion = $_POST['ubicacion'];
-    $coste = $_POST['coste'];
-    $total_alumnos = $_POST['total_alumnos'];
-    $objetivo = $_POST['objetivo'];
+    $id = mysqli_real_escape_string($conn, $_POST['id']);
+    $titulo = mysqli_real_escape_string($conn, $_POST['titulo']);
+    $tipo = mysqli_real_escape_string($conn, $_POST['tipo']);
+    $departamento = mysqli_real_escape_string($conn, $_POST['departamento']);
+    $profesor_responsable = mysqli_real_escape_string($conn, $_POST['profesor_responsable']);
+    $trimestre = mysqli_real_escape_string($conn, $_POST['trimestre']);
+    $fecha_inicio = mysqli_real_escape_string($conn, $_POST['fecha_inicio']);
+    $hora_inicio = mysqli_real_escape_string($conn, $_POST['hora_inicio']);
+    $fecha_fin = mysqli_real_escape_string($conn, $_POST['fecha_fin']);
+    $hora_fin = mysqli_real_escape_string($conn, $_POST['hora_fin']);
+    $organizador = mysqli_real_escape_string($conn, $_POST['organizador']);
+    $acompañantes = mysqli_real_escape_string($conn, $_POST['acompañantes']);
+    $ubicacion = mysqli_real_escape_string($conn, $_POST['ubicacion']);
+    $coste = mysqli_real_escape_string($conn, $_POST['coste']);
+    $total_alumnos = mysqli_real_escape_string($conn, $_POST['total_alumnos']);
+    $objetivo = mysqli_real_escape_string($conn, $_POST['objetivo']);
 
-    $stmt = $conn->prepare("UPDATE actividades SET titulo=?, tipo=?, departamento=?, profesor_responsable=?, trimestre=?, fecha_inicio=?, hora_inicio=?, fecha_fin=?, hora_fin=?, organizador=?, acompañantes=?, ubicacion=?, coste=?, total_alumnos=?, objetivo=? WHERE id=?");
-    $stmt->bind_param("sssssssssssssdi", $titulo, $tipo, $departamento, $profesor_responsable, $trimestre, $fecha_inicio, $hora_inicio, $fecha_fin, $hora_fin, $organizador, $acompañantes, $ubicacion, $coste, $total_alumnos, $objetivo, $id);
-    $stmt->execute();
-    $stmt->close();
-    header("Location: dashboard.php");
+    $query = "UPDATE actividades SET titulo='$titulo', tipo='$tipo', departamento='$departamento', profesor_responsable='$profesor_responsable', trimestre='$trimestre', fecha_inicio='$fecha_inicio', hora_inicio='$hora_inicio', fecha_fin='$fecha_fin', hora_fin='$hora_fin', organizador='$organizador', acompañantes='$acompañantes', ubicacion='$ubicacion', coste='$coste', total_alumnos='$total_alumnos', objetivo='$objetivo' WHERE id='$id'";
+    mysqli_query($conn, $query);
+    header("Location: main.php");
 }
 
-$id = $_GET['id'];
-$result = $conn->query("SELECT * FROM actividades WHERE id=$id");
-$row = $result->fetch_assoc();
+$id = mysqli_real_escape_string($conn, $_GET['id']);
+$query = "SELECT * FROM actividades WHERE id=$id";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +39,7 @@ $row = $result->fetch_assoc();
 </head>
 <body>
     <h1>Modificar Actividad</h1>
-    <a href="dashboard.php">Volver al Dashboard</a>
+    <a href="main.php">Volver al main</a>
     <form method="POST" action="modificar_actividad.php">
         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
         <label for="titulo">Título:</label>

@@ -1,12 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+
 include 'db.php';
 
-$result = $conn->query("SELECT * FROM actividades");
+$query = "SELECT * FROM actividades";
+$result = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +14,7 @@ $result = $conn->query("SELECT * FROM actividades");
 </head>
 <body>
     <h1>Actividades Registradas</h1>
-    <a href="dashboard.php">Volver al Dashboard</a>
+    <a href="main.php">Volver al main</a>
     <table border="1">
         <tr>
             <th>ID</th>
@@ -36,7 +34,7 @@ $result = $conn->query("SELECT * FROM actividades");
             <th>Total Alumnos</th>
             <th>Objetivo</th>
         </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
+        <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <tr>
                 <td><?php echo $row['id']; ?></td>
                 <td><?php echo $row['titulo']; ?></td>

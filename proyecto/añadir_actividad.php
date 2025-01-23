@@ -1,44 +1,39 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+
 include 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $titulo = $_POST['titulo'];
-    $tipo = $_POST['tipo'];
-    $departamento = $_POST['departamento'];
-    $profesor_responsable = $_POST['profesor_responsable'];
-    $trimestre = $_POST['trimestre'];
-    $fecha_inicio = $_POST['fecha_inicio'];
-    $hora_inicio = $_POST['hora_inicio'];
-    $fecha_fin = $_POST['fecha_fin'];
-    $hora_fin = $_POST['hora_fin'];
-    $organizador = $_POST['organizador'];
-    $acompañantes = $_POST['acompañantes'];
-    $ubicacion = $_POST['ubicacion'];
-    $coste = $_POST['coste'];
-    $total_alumnos = $_POST['total_alumnos'];
-    $objetivo = $_POST['objetivo'];
+    $titulo = mysqli_real_escape_string($conn, $_POST['titulo']);
+    $tipo = mysqli_real_escape_string($conn, $_POST['tipo']);
+    $departamento = mysqli_real_escape_string($conn, $_POST['departamento']);
+    $profesor_responsable = mysqli_real_escape_string($conn, $_POST['profesor_responsable']);
+    $trimestre = mysqli_real_escape_string($conn, $_POST['trimestre']);
+    $fecha_inicio = mysqli_real_escape_string($conn, $_POST['fecha_inicio']);
+    $hora_inicio = mysqli_real_escape_string($conn, $_POST['hora_inicio']);
+    $fecha_fin = mysqli_real_escape_string($conn, $_POST['fecha_fin']);
+    $hora_fin = mysqli_real_escape_string($conn, $_POST['hora_fin']);
+    $organizador = mysqli_real_escape_string($conn, $_POST['organizador']);
+    $acompañantes = mysqli_real_escape_string($conn, $_POST['acompañantes']);
+    $ubicacion = mysqli_real_escape_string($conn, $_POST['ubicacion']);
+    $coste = mysqli_real_escape_string($conn, $_POST['coste']);
+    $total_alumnos = mysqli_real_escape_string($conn, $_POST['total_alumnos']);
+    $objetivo = mysqli_real_escape_string($conn, $_POST['objetivo']);
 
-    $stmt = $conn->prepare("INSERT INTO actividades (titulo, tipo, departamento, profesor_responsable, trimestre, fecha_inicio, hora_inicio, fecha_fin, hora_fin, organizador, acompañantes, ubicacion, coste, total_alumnos, objetivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssssssssdi", $titulo, $tipo, $departamento, $profesor_responsable, $trimestre, $fecha_inicio, $hora_inicio, $fecha_fin, $hora_fin, $organizador, $acompañantes, $ubicacion, $coste, $total_alumnos, $objetivo);
-    $stmt->execute();
-    $stmt->close();
-    header("Location: dashboard.php");
+    $query = "INSERT INTO actividades (titulo, tipo, departamento, profesor_responsable, trimestre, fecha_inicio, hora_inicio, fecha_fin, hora_fin, organizador, acompañantes, ubicacion, coste, total_alumnos, objetivo) VALUES ('$titulo', '$tipo', '$departamento', '$profesor_responsable', '$trimestre', '$fecha_inicio', '$hora_inicio', '$fecha_fin', '$hora_fin', '$organizador', '$acompañantes', '$ubicacion', '$coste', '$total_alumnos', '$objetivo')";
+    mysqli_query($conn, $query);
+    header("Location: main.php");
 }
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
     <title>Añadir Actividad</title>
 </head>
 <body>
     <h1>Añadir Nueva Actividad</h1>
-    <a href="dashboard.php">Volver al Dashboard</a>
+    <a href="main.php">Volver al main</a>
     <form method="POST" action="añadir_actividad.php">
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" required><br>

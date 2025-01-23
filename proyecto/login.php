@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($usuario['password'] === $password){ // CASO 1 (GRAN ERROR)
         //if (hash_equals($usuario['password'], $password_hashed)) {
             $_SESSION['username'] = $username;
-            header("Location: dashboard.php");
+            header("Location: /proyecto/main.php");
         } else {
-            echo "Error: Contraseña incorrecta." . $password_hashed . " es diferente de " . $usuario['password'];
+            echo "Error: Contraseña incorrecta.";
         }
     } else {
         echo "Error: Usuario no encontrado.";
