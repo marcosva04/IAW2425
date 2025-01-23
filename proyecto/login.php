@@ -2,7 +2,7 @@
 // Conexión a la base de datos
 $servername = "sql107.thsite.top"; // Nombre del servidor
 $username = "thsi_38097542"; // Nombre de usuario
-$password = "0!JSTh7?"; // Contrasena
+$password = ""; // Contrasena
 $database = "thsi_38097542_markos";
 $enlace = mysqli_connect($servername, $username, $password, $database);
 
