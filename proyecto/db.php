@@ -1,14 +1,13 @@
 <?php
-$servername = "sql107.thsite.top";
-$username = "thsi_38097542";
-$password = "";
-$dbname = "thsi_38097542_markos";
+$host = 'sql107.thsite.top';
+$dbname = 'thsi_38097542_markos';
+$username = 'thsi_38097542';
+$password = '';
 
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Error de conexión: " . $e->getMessage());
 }
 ?>

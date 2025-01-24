@@ -1,66 +1,51 @@
 <?php
-// Conexión a la base de datos
-$servername = "sql107.thsite.top"; // Nombre del servidor
-$username = "thsi_38097542"; // Nombre de usuario
-$password = ""; // Contrasena
-$database = "thsi_38097542_markos";
-$enlace = mysqli_connect($servername, $username, $password, $database);
+session_start();
+include 'auth.php';
 
-// Verificar conexión
-if (!$enlace) {
-    die("Conexión fallida: " . mysqli_connect_error());
-}
-
-// Procesar formulario al enviarlo
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validar que los campos no estén vacíos
-    if (empty($_POST['username']) || empty($_POST['password'])) {
-        die("Error: Todos los campos son obligatorios.");
-    }
+    $usuario = $_POST['usuario'];
+    $password = $_POST['password'];
 
-    // Saneamiento de las entradas
-    $username = htmlspecialchars(trim($_POST['username']));
-    $password = htmlspecialchars(trim($_POST['password']));
-
-    // Consultar el usuario por username
-    $query = "SELECT * FROM login WHERE username='$username'";
-    $resultado = mysqli_query($enlace, $query);
-
-    if (mysqli_num_rows($resultado) === 1) {
-        // Recuperar los datos del usuario
-        $usuario = mysqli_fetch_assoc($resultado);
-
-        // Usar el hash almacenado como el salt para cifrar la contraseña ingresada
-        $password_hashed = crypt($password, $usuario['password']);
-
-        // Verificar la contraseña (comparación estricta)
-        if ($usuario['password'] === $password){ // CASO 1 (GRAN ERROR)
-        //if (hash_equals($usuario['password'], $password_hashed)) {
-            $_SESSION['username'] = $username;
-            header("Location: /proyecto/main.php");
-        } else {
-            echo "Error: Contraseña incorrecta.";
-        }
+    if (autenticar($usuario, $password)) {
+        $_SESSION['usuario'] = $usuario;
+        header('Location: actividades.php');
+        exit();
     } else {
-        echo "Error: Usuario no encontrado.";
+        $error = "Usuario o contraseña incorrectos";
     }
 }
-
-mysqli_close($enlace);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Inicio de Sesión</title>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <form method="POST" action="/proyecto/login.php">
-        <label for="username">Usuario:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required><br>
-        <input type="submit" value="Iniciar Sesión">
-    </form>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Iniciar Sesión</h2>
+                        <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="usuario" class="form-label">Usuario:</label>
+                                <input type="text" id="usuario" name="usuario" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña:</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
